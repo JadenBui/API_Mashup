@@ -1,8 +1,11 @@
 import React from "react";
-import logo from "./logo.svg";
-
+import LeafletMap from "./Components/LeafletMap/LeafletMap";
 const App = () => {
-  return <div>Hello world</div>;
+  return (
+    <div className="leaflet-map">
+      <LeafletMap />
+    </div>
+  );
 };
 
 export default App;

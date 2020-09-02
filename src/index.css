@@ -11,6 +11,27 @@ li {
   list-style-type: none;
 }
 
+.leaflet-map {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.warning {
+  background: red;
+}
+
+.leaflet-map button {
+  width: 200px;
+  margin: auto;
+}
+
+.leaflet-container {
+  height: 480px;
+  width: 840px;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
