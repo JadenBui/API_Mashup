@@ -55,10 +55,20 @@ const LeafletMap = ({ coords }) => {
           <Popup>
             <Card
               title={
-                <Text code type="danger">
-                  COVID-19 STATISTIC{" "}
-                  {locationInfo ? `of ${locationInfo.country}` : null}
-                </Text>
+                <Fragment>
+                  <Row>
+                    <Text code type="danger">
+                      COVID-19 STATISTIC
+                    </Text>
+                  </Row>
+                  <Row>
+                    <Text code style={{ color: "#1890ff" }}>
+                      {locationInfo
+                        ? `of ${locationInfo.country.toUpperCase()}`
+                        : null}
+                    </Text>
+                  </Row>
+                </Fragment>
               }
               style={{ textAlign: "center" }}
               bordered={false}
