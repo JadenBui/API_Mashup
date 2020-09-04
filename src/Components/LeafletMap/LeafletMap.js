@@ -2,10 +2,11 @@ import React, { useState, Fragment, useContext } from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import { Icon } from "leaflet";
 import { geolocated } from "react-geolocated";
-import { Button } from "antd";
+import { Button, Card, Row, Typography } from "antd";
 import SearchBar from "../SearchBar/SearchBar";
 import { GeoContext } from "../../contexts/GeoContextProvider";
 
+const { Text } = Typography;
 const iconLinks = ["info.png", "location.png"];
 const icons = Array.from({ length: 2 }).map(
   (_, index) =>
@@ -23,8 +24,8 @@ const userIcon = new Icon({
 const LeafletMap = ({ coords }) => {
   const [zoom, setZoom] = useState(13);
   const [showUserPosition, setShowUserPosition] = useState(false);
-  const geoContext = useContext(GeoContext);
-  const position = [geoContext.geoStat.lat, geoContext.geoStat.lng];
+  const { geoStat, covidStat, locationInfo } = useContext(GeoContext);
+  const position = [geoStat.lat, geoStat.lng];
   const userPosition = coords && [coords.latitude, coords.longitude];
 
   const onMyLocationClick = () => {
@@ -51,14 +52,36 @@ const LeafletMap = ({ coords }) => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         <Marker position={position} icon={icons[0]}>
-          <Popup>Covid-19 stats</Popup>
+          <Popup>
+            <Card
+              title={
+                <Text code type="danger">
+                  COVID-19 STATISTIC{" "}
+                  {locationInfo ? `of ${locationInfo.country}` : null}
+                </Text>
+              }
+              style={{ textAlign: "center" }}
+              bordered={false}
+              hoverable={true}
+            >
+              {Object.keys(covidStat).map((stat) => {
+                return (
+                  <Row>
+                    <Text keyboard>
+                      {stat} Cases: {covidStat[stat]}
+                    </Text>
+                  </Row>
+                );
+              })}
+            </Card>
+          </Popup>
         </Marker>
         {coords && showUserPosition ? (
           <Marker
             position={[coords.latitude, coords.longitude]}
             icon={icons[1]}
           >
-            <Popup>You are here</Popup>
+            <Popup>You're here</Popup>
           </Marker>
         ) : null}
       </Map>

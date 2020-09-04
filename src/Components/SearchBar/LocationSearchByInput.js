@@ -8,16 +8,22 @@ const LocationSearchByInput = () => {
   const onAddressChange = (address) => {
     setAddress(address);
   };
-  const geoContext = useContext(GeoContext);
+  const { setCoordinates, setLocationInfo } = useContext(GeoContext);
 
   const onAddressSelect = async (address) => {
     const fomarttedAddress = encodeURI(address);
-    const result = await axios.get(
-      `http://localhost:3001/geo/${fomarttedAddress}`
+    const coordinateResponse = await axios.get(
+      `http://localhost:3001/geo/address/${fomarttedAddress}`
     );
-    const coordinates = result.data.data.results[0].geometry.location;
-
-    geoContext.setCoordinates(coordinates);
+    const coordinateResult = coordinateResponse.data.data.results[0];
+    const coordinates = coordinateResult.geometry.location;
+    const locationResponse = await axios.get(
+      `http://localhost:3001/geo/latlng?lat=${coordinates.lat}&lng=${coordinates.lng}`
+    );
+    const locationInfo = locationResponse.data.data;
+    console.log(locationInfo);
+    setLocationInfo(locationInfo);
+    setCoordinates(coordinates);
   };
 
   const onAdressClick = (address) => {

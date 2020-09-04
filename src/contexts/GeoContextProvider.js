@@ -10,15 +10,19 @@ export default function GeoContextProvider(props) {
     lat: DEFAULT_LAT,
     lng: DEFAULT_LNG,
   });
-  const [province, setProvince] = useState();
-  const [country, setCountry] = useState();
-  const [covidStat, setCovidStat] = useState({});
+  const [locationInfo, setLocationInfo] = useState({
+    country: "Australia",
+    province: "Queensland",
+  });
+  const [covidStat, setCovidStat] = useState([]);
   useEffect(() => {
     const getCovidStat = async () => {
-      const result = await axios.get(
-        `localhost:3001/statistic/${country}/${province}`
+      const { country, province } = locationInfo;
+      const response = await axios.get(
+        `http://localhost:3001/statistic/${country}/${province}`
       );
-      setCovidStat(result);
+      const statisticObject = response.data.data;
+      setCovidStat(statisticObject);
     };
     getCovidStat();
   }, [geoStat]);
@@ -27,7 +31,15 @@ export default function GeoContextProvider(props) {
   };
 
   return (
-    <GeoContext.Provider value={{ geoStat, setCoordinates }}>
+    <GeoContext.Provider
+      value={{
+        geoStat,
+        setCoordinates,
+        covidStat,
+        locationInfo,
+        setLocationInfo,
+      }}
+    >
       {props.children}
     </GeoContext.Provider>
   );
