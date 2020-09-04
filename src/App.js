@@ -1,9 +1,12 @@
 import React from "react";
 import LeafletMap from "./Components/LeafletMap/LeafletMap";
+import GeoContextProvider from "./contexts/GeoContextProvider";
 const App = () => {
   return (
     <div className="leaflet-map">
-      <LeafletMap />
+      <GeoContextProvider>
+        <LeafletMap />
+      </GeoContextProvider>
     </div>
   );
 };

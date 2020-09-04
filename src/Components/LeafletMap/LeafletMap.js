@@ -1,11 +1,10 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import { Icon } from "leaflet";
 import { geolocated } from "react-geolocated";
 import { Button } from "antd";
-
-const DEFAULT_LAT = -27.46977;
-const DEFAULT_LNG = 153.025131;
+import SearchBar from "../SearchBar/SearchBar";
+import { GeoContext } from "../../contexts/GeoContextProvider";
 
 const iconLinks = ["info.png", "location.png"];
 const icons = Array.from({ length: 2 }).map(
@@ -24,8 +23,10 @@ const userIcon = new Icon({
 const LeafletMap = ({ coords }) => {
   const [zoom, setZoom] = useState(13);
   const [showUserPosition, setShowUserPosition] = useState(false);
-  const position = [DEFAULT_LAT, DEFAULT_LNG];
+  const geoContext = useContext(GeoContext);
+  const position = [geoContext.geoStat.lat, geoContext.geoStat.lng];
   const userPosition = coords && [coords.latitude, coords.longitude];
+
   const onMyLocationClick = () => {
     if (coords) {
       setShowUserPosition((prev) => !prev);
@@ -40,6 +41,7 @@ const LeafletMap = ({ coords }) => {
       >
         {showUserPosition ? "Hide My Location" : "My Location"}
       </Button>
+      <SearchBar />
       <Map
         center={coords && showUserPosition ? userPosition : position}
         zoom={zoom}
