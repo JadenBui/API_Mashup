@@ -5,12 +5,15 @@ import { AimOutlined } from "@ant-design/icons";
 import { MapContext } from "../../contexts/MapContext";
 
 export default function ControlBoard() {
-  const { onShowUserLocation, showUserLocation } = useContext(MapContext);
+  const { onShowUserLocation, showUserLocation, userCoordinates } = useContext(
+    MapContext
+  );
   return (
     <div className="map-controller">
       <div className="map-controller__user-location-btn">
         <Button
           type={showUserLocation ? "danger" : "primary"}
+          disabled={!userCoordinates}
           onClick={onShowUserLocation}
         >
           <AimOutlined />
