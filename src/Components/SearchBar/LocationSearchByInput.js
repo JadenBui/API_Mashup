@@ -1,8 +1,10 @@
 import { Input, Button } from "antd";
 import React, { useState, Fragment, useContext } from "react";
 import PlacesAutocomplete from "react-places-autocomplete";
-import { GeoContext } from "../../contexts/GeoContextProvider";
+import { GeoContext } from "../../contexts/GeoContext";
 import axios from "axios";
+import { SearchOutlined } from "@ant-design/icons";
+
 const LocationSearchByInput = () => {
   const [stateAddress, setAddress] = useState("");
   const onAddressChange = (address) => {
@@ -21,7 +23,6 @@ const LocationSearchByInput = () => {
       `http://localhost:3001/geo/latlng?lat=${coordinates.lat}&lng=${coordinates.lng}`
     );
     const locationInfo = locationResponse.data.data;
-    console.log(locationInfo);
     setLocationInfo(locationInfo);
     setCoordinates(coordinates);
   };
@@ -48,6 +49,7 @@ const LocationSearchByInput = () => {
               type="primary"
               onClick={() => onAddressSelect(stateAddress)}
             >
+              <SearchOutlined />
               Search
             </Button>
           </div>

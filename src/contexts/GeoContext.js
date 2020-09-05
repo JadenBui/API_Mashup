@@ -5,7 +5,7 @@ export const GeoContext = createContext();
 const DEFAULT_LAT = -27.46977;
 const DEFAULT_LNG = 153.025131;
 
-export default function GeoContextProvider(props) {
+export default function GeoContextProvider({ children }) {
   const [geoStat, setGeoStat] = useState({
     lat: DEFAULT_LAT,
     lng: DEFAULT_LNG,
@@ -40,7 +40,7 @@ export default function GeoContextProvider(props) {
         setLocationInfo,
       }}
     >
-      {props.children}
+      {children}
     </GeoContext.Provider>
   );
 }

@@ -2,9 +2,9 @@ import React, { useState, Fragment, useContext } from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import { Icon } from "leaflet";
 import { geolocated } from "react-geolocated";
-import { Button, Card, Row, Typography } from "antd";
-import SearchBar from "../SearchBar/SearchBar";
-import { GeoContext } from "../../contexts/GeoContextProvider";
+import { Card, Row, Typography } from "antd";
+import { GeoContext } from "../../contexts/GeoContext";
+import { MapContext } from "../../contexts/MapContext";
 
 const { Text } = Typography;
 const iconLinks = ["info.png", "location.png"];
@@ -22,29 +22,15 @@ const userIcon = new Icon({
 });
 
 const LeafletMap = ({ coords }) => {
-  const [zoom, setZoom] = useState(13);
-  const [showUserPosition, setShowUserPosition] = useState(false);
+  const { zoom, showUserLocation } = useContext(MapContext);
   const { geoStat, covidStat, locationInfo } = useContext(GeoContext);
   const position = [geoStat.lat, geoStat.lng];
   const userPosition = coords && [coords.latitude, coords.longitude];
 
-  const onMyLocationClick = () => {
-    if (coords) {
-      setShowUserPosition((prev) => !prev);
-      setZoom(showUserPosition ? 13 : 17);
-    }
-  };
   return (
     <Fragment>
-      <Button
-        type={showUserPosition ? "danger" : "primary"}
-        onClick={onMyLocationClick}
-      >
-        {showUserPosition ? "Hide My Location" : "My Location"}
-      </Button>
-      <SearchBar />
       <Map
-        center={coords && showUserPosition ? userPosition : position}
+        center={coords && showUserLocation ? userPosition : position}
         zoom={zoom}
       >
         <TileLayer
@@ -86,7 +72,7 @@ const LeafletMap = ({ coords }) => {
             </Card>
           </Popup>
         </Marker>
-        {coords && showUserPosition ? (
+        {coords && showUserLocation ? (
           <Marker
             position={[coords.latitude, coords.longitude]}
             icon={icons[1]}
