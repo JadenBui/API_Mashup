@@ -3,6 +3,7 @@ import React, { useState, Fragment, useContext } from "react";
 import PlacesAutocomplete from "react-places-autocomplete";
 import { GeoContext } from "../../contexts/GeoContext";
 import axios from "axios";
+import ACTIONS from "../../contexts/actions";
 import { SearchOutlined } from "@ant-design/icons";
 
 const LocationSearchByInput = () => {
@@ -10,7 +11,7 @@ const LocationSearchByInput = () => {
   const onAddressChange = (address) => {
     setAddress(address);
   };
-  const { setCoordinates, setLocationInfo } = useContext(GeoContext);
+  const { dispatch } = useContext(GeoContext);
 
   const onAddressSelect = async (address) => {
     const fomarttedAddress = encodeURI(address);
@@ -23,8 +24,8 @@ const LocationSearchByInput = () => {
       `http://localhost:3001/geo/latlng?lat=${coordinates.lat}&lng=${coordinates.lng}`
     );
     const locationInfo = locationResponse.data.data;
-    setLocationInfo(locationInfo);
-    setCoordinates(coordinates);
+    dispatch({ type: ACTIONS.SET_COUNTRY_INFORMATION, payload: locationInfo });
+    dispatch({ type: ACTIONS.SET_GEO_LOCATION, payload: coordinates });
   };
 
   const onAdressClick = (address) => {

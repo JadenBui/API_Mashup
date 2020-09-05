@@ -23,8 +23,8 @@ const userIcon = new Icon({
 
 const LeafletMap = ({ coords }) => {
   const { zoom, showUserLocation } = useContext(MapContext);
-  const { geoStat, covidStat, locationInfo } = useContext(GeoContext);
-  const position = [geoStat.lat, geoStat.lng];
+  const { lat, lng, covidStat, country, province } = useContext(GeoContext);
+  const position = [lat, lng];
   const userPosition = coords && [coords.latitude, coords.longitude];
 
   return (
@@ -49,8 +49,8 @@ const LeafletMap = ({ coords }) => {
                   </Row>
                   <Row>
                     <Text code style={{ color: "#1890ff" }}>
-                      {locationInfo
-                        ? `of ${locationInfo.country.toUpperCase()}`
+                      {country
+                        ? `of ${country.toUpperCase()} (${province})`
                         : null}
                     </Text>
                   </Row>
