@@ -5,32 +5,39 @@ import { geolocated } from "react-geolocated";
 import { Card, Row, Typography } from "antd";
 import { GeoContext } from "../../contexts/GeoContext";
 import { MapContext } from "../../contexts/MapContext";
-import { LoadingOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  InstagramOutlined,
+  TwitterOutlined,
+} from "@ant-design/icons";
 import ACTIONS from "../../contexts/actions/mapActions";
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 const iconLinks = ["info.png", "location.png"];
 const icons = Array.from({ length: 2 }).map(
   (_, index) =>
     new Icon({
       iconUrl: iconLinks[index],
-      iconSize: [25, 25],
+      iconSize: [30, 30],
     })
 );
 
-const userIcon = new Icon({
-  iconUrl: "location.png",
-  iconSize: [25, 25],
+const photoIcon = new Icon({
+  iconUrl: "photo.png",
+  iconSize: [35, 35],
 });
 
 const LeafletMap = ({ coords }) => {
   const { zoom, showUserLocation, mapDispatch } = useContext(MapContext);
-  const { coordinates, covidStat, countryInfo, dataLoading } = useContext(
-    GeoContext
-  );
+  const {
+    coordinates,
+    covidStat,
+    countryInfo,
+    dataLoading,
+    photos,
+  } = useContext(GeoContext);
   const position = [coordinates.lat, coordinates.lng];
   const userPosition = coords && [coords.latitude, coords.longitude];
-
   useEffect(() => {
     if (coords) {
       mapDispatch({ type: ACTIONS.SET_USER_COORDINATES, payload: coords });
@@ -98,6 +105,71 @@ const LeafletMap = ({ coords }) => {
             <Popup>You're here</Popup>
           </Marker>
         ) : null}
+        {photos.map((photo) => {
+          return (
+            <Marker
+              position={[photo.latitude, photo.longitude]}
+              icon={photoIcon}
+              key={photo.id}
+            >
+              <Popup className="photo-info-popup">
+                <Card
+                  className="map-photo-card"
+                  cover={
+                    <img className="map-photo" alt="unsplash" src={photo.url} />
+                  }
+                >
+                  <div className="map-photo-card__body">
+                    <Row
+                      align="middle"
+                      justify="center"
+                      style={{ marginBottom: "1em" }}
+                    >
+                      <Text code type="danger">
+                        {photo.description
+                          ? photo.description.length > 30
+                            ? photo.description.slice(0, 30) + "..."
+                            : photo.description
+                          : photo.userName}
+                      </Text>
+                    </Row>
+                    <Row align="middle">
+                      <img
+                        className="map-photo-card__avatar"
+                        src={photo.avatar}
+                      />
+                      <Text code>{photo.userName}</Text>
+                    </Row>
+                    {photo.instagram && (
+                      <Row align="middle" style={{ margin: ".5em 0" }}>
+                        <InstagramOutlined />
+                        <Link
+                          code
+                          href={`https://www.instagram.com/${photo.instagram}/?hl=en`}
+                          target="_blank"
+                        >
+                          {photo.instagram}
+                        </Link>
+                      </Row>
+                    )}
+                    {photo.twitter && (
+                      <Row align="middle">
+                        <TwitterOutlined />
+                        <Link
+                          code
+                          href={`https://twitter.com/${photo.twitter}`}
+                          target="_blank"
+                        >
+                          {photo.twitter}
+                        </Link>
+                      </Row>
+                    )}
+                  </div>
+                </Card>
+              </Popup>
+            </Marker>
+          );
+        })}
       </Map>
     </Fragment>
   );

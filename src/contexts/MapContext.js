@@ -13,7 +13,7 @@ export default function MapContextProvider({ children }) {
   const onShowUserLocation = () => {
     mapDispatch({
       type: ACTIONS.SET_ZOOM,
-      payload: mapState.showUserLocation ? 13 : 17,
+      payload: mapState.showUserLocation ? 12 : 17,
     });
     mapDispatch({ type: ACTIONS.SET_SHOW_USER_LOCATION });
   };

@@ -8,15 +8,18 @@ const DEFAULT_LAT = -27.46977;
 const DEFAULT_LNG = 153.025131;
 const DEFAULT_COUNTRY = "Australia";
 const DEFAULT_PROVINCE = "Queensland";
+const DEFAULT_LOCALITY = "Brisbane";
 
 export default function GeoContextProvider({ children }) {
   const [geoState, geoDispatch] = useReducer(geoRuducer, {
     dataLoading: false,
     covidStat: {},
+    photos: [],
     coordinates: { lat: DEFAULT_LAT, lng: DEFAULT_LNG },
     countryInfo: {
       country: DEFAULT_COUNTRY,
       province: DEFAULT_PROVINCE,
+      locality: DEFAULT_LOCALITY,
     },
   });
 
@@ -26,9 +29,7 @@ export default function GeoContextProvider({ children }) {
       geoDispatch({ type: ACTIONS.SET_DATA_LOADING });
       try {
         const response = await axios.get(
-          `http://localhost:3001/statistic/${country}/${
-            province === "" ? "general" : province
-          }`
+          `http://localhost:3001/statistic/${country}/${province}`
         );
         const statisticObject = response.data.data;
         console.log(statisticObject);
@@ -43,7 +44,17 @@ export default function GeoContextProvider({ children }) {
         console.log(error);
       }
     };
-    getCovidStat();
+    const getPhotos = async () => {
+      const photoResponse = await axios.get(
+        `http://localhost:3001/photos/${geoState.countryInfo.locality}?lat=${geoState.coordinates.lat}&lng=${geoState.coordinates.lng}`
+      );
+      geoDispatch({
+        type: ACTIONS.SET_PHOTOS,
+        payload: photoResponse.data.data,
+      });
+    };
+    //getCovidStat();
+    getPhotos();
   }, [geoState.countryInfo]);
 
   return (

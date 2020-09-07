@@ -9,10 +9,17 @@ export default (state, action) => {
     case ACTIONS.SET_GEO_LOCATION:
       return { ...state, coordinates: { lat: payload.lat, lng: payload.lng } };
 
+    case ACTIONS.SET_PHOTOS:
+      return { ...state, photos: payload };
+
     case ACTIONS.SET_COUNTRY_INFORMATION:
       return {
         ...state,
-        countryInfo: { country: payload.country, province: payload.province },
+        countryInfo: {
+          country: payload.country,
+          province: payload.province,
+          locality: payload.locality,
+        },
       };
 
     case ACTIONS.SET_COVID19_STAT:

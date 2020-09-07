@@ -95,6 +95,52 @@ li {
   padding: 0;
 }
 
+.map-photo-card {
+  display: block;
+  padding: 0;
+  min-width: 10em;
+  min-height: 100%;
+}
+
+.map-photo-card {
+  padding: 0;
+  min-width: 10em;
+  max-height: 15em;
+}
+
+.map-photo-card > .ant-card-body {
+  height: fit-content;
+  background: white;
+  border-radius: 1em;
+  padding: 1em;
+  box-shadow: 10px 11px 31px -11px rgba(0, 0, 0, 0.75);
+  min-width: 240px;
+}
+
+.photo-info-popup .leaflet-popup-content-wrapper {
+  height: 32em;
+}
+
+.map-photo-card__body {
+  padding: 0 !important;
+}
+
+.map-photo-card__avatar {
+  border-radius: 50%;
+  width: 3em;
+  height: 3em;
+}
+
+.ant-card-body {
+  padding: 0;
+}
+
+.map-photo {
+  max-width: 10em;
+  max-height: 15em;
+  margin: auto;
+}
+
 @media only screen and (max-width: 600px) {
   .leaflet-container {
     height: 100%;

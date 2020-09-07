@@ -24,10 +24,7 @@ const LocationSearchByInput = () => {
       const locationResponse = await axios.get(
         `http://localhost:3001/geo/latlng?lat=${coordinates.lat}&lng=${coordinates.lng}`
       );
-      const locationInfo =
-        Object.keys(locationResponse.data.data.result).length === 1
-          ? { ...locationResponse.data.data.result, province: "" }
-          : locationResponse.data.data.result;
+      const locationInfo = locationResponse.data.data;
       geoDispatch({
         type: ACTIONS.SET_COUNTRY_INFORMATION,
         payload: locationInfo,
