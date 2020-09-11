@@ -9,13 +9,19 @@ export default (state, action) => {
     case ACTIONS.SET_USER_COORDINATES:
       return {
         ...state,
-        userCoordinates: { lat: payload.lat, lng: payload.lng },
+        userCoordinates: { lat: payload.latitude, lng: payload.longitude },
       };
 
     case ACTIONS.SET_SHOW_USER_LOCATION:
       return {
         ...state,
         showUserLocation: !state.showUserLocation,
+      };
+
+    case ACTIONS.SET_NEWS:
+      return {
+        ...state,
+        news: payload,
       };
   }
 };

@@ -24,5 +24,11 @@ export default (state, action) => {
 
     case ACTIONS.SET_COVID19_STAT:
       return { ...state, covidStat: payload };
+
+    case ACTIONS.SET_NEWS:
+      return { ...state, news: payload };
+
+    case ACTIONS.SET_TWEETS:
+      return { ...state, tweets: payload };
   }
 };

@@ -57,6 +57,7 @@ const LeafletMap = ({ coords }) => {
         <Marker position={position} icon={icons[0]}>
           <Popup>
             <Card
+              headStyle={{ padding: "0" }}
               title={
                 <Fragment>
                   <Row>
@@ -82,7 +83,7 @@ const LeafletMap = ({ coords }) => {
               hoverable={true}
             >
               {dataLoading ? (
-                <LoadingOutlined className="map-icon" />
+                <LoadingOutlined className="map-loading-icon" />
               ) : (
                 Object.keys(covidStat).map((stat, index) => {
                   return (

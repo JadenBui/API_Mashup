@@ -1,4 +1,4 @@
-import { Input, Button } from "antd";
+import { Input, Button, message } from "antd";
 import React, { useState, Fragment, useContext } from "react";
 import PlacesAutocomplete from "react-places-autocomplete";
 import { GeoContext } from "../../contexts/GeoContext";
@@ -25,27 +25,33 @@ const LocationSearchByInput = () => {
         `http://localhost:3001/geo/latlng?lat=${coordinates.lat}&lng=${coordinates.lng}`
       );
       const locationInfo = locationResponse.data.data;
+      geoDispatch({ type: ACTIONS.SET_GEO_LOCATION, payload: coordinates });
       geoDispatch({
         type: ACTIONS.SET_COUNTRY_INFORMATION,
         payload: locationInfo,
       });
-      geoDispatch({ type: ACTIONS.SET_GEO_LOCATION, payload: coordinates });
     } catch (error) {
-      console.log(error.response);
+      message.error(error.response.data.message);
     }
   };
 
-  const onAdressClick = (address) => {
+  const onAddressClick = (address) => {
     onAddressChange(address);
   };
+
+  const onAddressNotFound = () => {
+    message.error("Sorry, the address is not found!");
+  };
+
   return (
     <PlacesAutocomplete
       onChange={onAddressChange}
       onSelect={onAddressSelect}
+      onError={onAddressNotFound}
       value={stateAddress}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-        <Fragment>
+        <div className="search-section">
           <div className="search-bar">
             <Input
               {...getInputProps({
@@ -64,7 +70,9 @@ const LocationSearchByInput = () => {
 
           <div className="sugesstion-dropdown">
             {loading ? (
-              <LoadingOutlined />
+              <div style={{ textAlign: "center" }}>
+                <LoadingOutlined />
+              </div>
             ) : (
               suggestions.map((suggestion) => {
                 const style = suggestion.active
@@ -85,7 +93,7 @@ const LocationSearchByInput = () => {
                       style,
                     })}
                     key={suggestion.placeId}
-                    onClick={() => onAdressClick(suggestion.description)}
+                    onClick={() => onAddressClick(suggestion.description)}
                   >
                     <div>{suggestion.description}</div>
                   </div>
@@ -93,7 +101,7 @@ const LocationSearchByInput = () => {
               })
             )}
           </div>
-        </Fragment>
+        </div>
       )}
     </PlacesAutocomplete>
   );

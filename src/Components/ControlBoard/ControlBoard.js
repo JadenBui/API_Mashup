@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
-import SearchBar from "../SearchBar/SearchBar";
 import { Button } from "antd";
 import { AimOutlined } from "@ant-design/icons";
 import { MapContext } from "../../contexts/MapContext";
+import NewsSection from "../NewsSection/NewsSection";
+import TwitterSection from "../TwitterSection/TwitterSection";
+import SearchBar from "../SearchBar/LocationSearchByInput";
 
 export default function ControlBoard() {
   const { onShowUserLocation, showUserLocation, userCoordinates } = useContext(
@@ -20,8 +22,9 @@ export default function ControlBoard() {
           {showUserLocation ? "Hide My Location" : "My Location"}
         </Button>
       </div>
-
       <SearchBar />
+      <NewsSection />
+      <TwitterSection />
     </div>
   );
 }

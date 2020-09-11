@@ -41,6 +41,10 @@ li {
   justify-items: center;
 }
 
+.map-controller {
+  overflow-y: scroll;
+}
+
 .map-controller__user-location-btn {
   width: 100%;
 }
@@ -50,8 +54,9 @@ li {
   margin: 1em auto 1.5em;
 }
 
-.map-icon {
+.map-loading-icon {
   font-size: 3.5em;
+  margin: auto;
 }
 
 .search-bar {
@@ -78,11 +83,17 @@ li {
   border: 1px solid black;
 }
 
+.search-secion {
+  position: relative;
+}
+
 .sugesstion-dropdown {
   background-color: #fff;
   box-shadow: 0 1px 3px 0 #01060e;
   width: 28em;
   margin: 0 1em;
+  position: absolute;
+  z-index: 99;
 }
 
 .ant-card-body {
@@ -131,6 +142,79 @@ li {
   height: 3em;
 }
 
+.news h3 {
+  text-align: center;
+  margin: 0;
+}
+
+.twitter h3 {
+  text-align: center;
+  margin: 0;
+  color: white;
+}
+
+.twitter-section {
+  background-color: rgb(21 32 43);
+  color: white;
+}
+
+.news-section,
+.twitter-section {
+  margin-top: 1em;
+  display: block;
+  padding: 1em;
+  overflow-y: scroll;
+  max-height: 22em;
+  max-width: 37em;
+  box-shadow: 0 0.1em 0.3em 0 #01060e;
+}
+
+.news-article {
+  display: flex;
+  padding: 1.5em;
+  flex-direction: row;
+  align-items: center;
+  background: rgb(255, 241, 241);
+  margin-bottom: 0.5em;
+  border-radius: 1em;
+  box-shadow: 0 0.1em 0.7em 0 #01060e;
+}
+
+.news-article__image img {
+  width: 150px;
+  height: 100px;
+  margin-left: 1em;
+  box-shadow: 0 5px 7px 0 #01060e;
+}
+
+.tweets__avatar img {
+  border-radius: 2em;
+}
+
+.tweets__headline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tweets__author {
+  margin-left: 1em;
+  text-align: left;
+}
+
+.tweets__author h3 {
+  text-align: left;
+  color: white;
+}
+
+.tweets__author h4 {
+  color: white;
+}
+
+.news-article__description p {
+  word-break: break-word;
+}
+
 .ant-card-body {
   padding: 0;
 }
@@ -139,6 +223,20 @@ li {
   max-width: 10em;
   max-height: 15em;
   margin: auto;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  display: none;
 }
 
 @media only screen and (max-width: 600px) {
@@ -167,5 +265,16 @@ li {
     top: 46%;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .news-article {
+    display: flex;
+    padding: 1.5em;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(255, 241, 241);
+    margin-bottom: 0.5em;
+    border-radius: 1em;
+    box-shadow: 0 0.1em 0.7em 0 #01060e;
   }
 }
