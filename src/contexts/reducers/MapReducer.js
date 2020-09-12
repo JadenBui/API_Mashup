@@ -23,5 +23,8 @@ export default (state, action) => {
         ...state,
         news: payload,
       };
+
+    default:
+      return { ...state };
   }
 };

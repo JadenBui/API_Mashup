@@ -208,7 +208,12 @@ li {
 }
 
 .tweets__author h4 {
-  color: white;
+  color: #1890ff;
+}
+
+.tweets__content h4 {
+  color: #1890ff;
+  margin: 0;
 }
 
 .news-article__description p {

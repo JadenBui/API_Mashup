@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext } from "react";
 import { GeoContext } from "../../contexts/GeoContext";
 import { Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -6,7 +6,6 @@ const { Link } = Typography;
 
 export default function NewsSection() {
   const { tweets } = useContext(GeoContext);
-  console.log(tweets);
   return (
     <div className="twitter">
       <div className="twitter-section">
@@ -17,7 +16,7 @@ export default function NewsSection() {
               <div className="tweets" key={tweet.id}>
                 <div className="tweets__headline">
                   <div className="tweets__avatar">
-                    <img src={tweet.user_image_url} />
+                    <img src={tweet.user_image_url} alt="user_image" />
                   </div>
                   <div className="tweets__author">
                     <h3>{tweet.name}</h3>
@@ -25,7 +24,15 @@ export default function NewsSection() {
                   </div>
                 </div>
                 <div className="tweets__content">
-                  <p>{tweet.content}</p>
+                  <h4>#{tweet.hashtags}</h4>
+                  <p>
+                    {tweet.content}{" "}
+                    {tweet.url && (
+                      <Link href={tweet.url} target="_blank">
+                        More
+                      </Link>
+                    )}
+                  </p>
                 </div>
               </div>
             );

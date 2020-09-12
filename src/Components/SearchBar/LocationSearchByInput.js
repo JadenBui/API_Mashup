@@ -1,5 +1,5 @@
 import { Input, Button, message } from "antd";
-import React, { useState, Fragment, useContext } from "react";
+import React, { useState, useContext } from "react";
 import PlacesAutocomplete from "react-places-autocomplete";
 import { GeoContext } from "../../contexts/GeoContext";
 import axios from "axios";
@@ -13,9 +13,12 @@ const LocationSearchByInput = () => {
   };
   const { geoDispatch } = useContext(GeoContext);
 
-  const onAddressSelect = async (address) => {
+  const onAddressSelect = async () => {
+    if (stateAddress.trim().length === 0) {
+      return message.error("The search bar is empty!");
+    }
     try {
-      const fomarttedAddress = encodeURI(address);
+      const fomarttedAddress = encodeURI(stateAddress.toLowerCase());
       const coordinateResponse = await axios.get(
         `http://localhost:3001/geo/address/${fomarttedAddress}`
       );
@@ -25,11 +28,11 @@ const LocationSearchByInput = () => {
         `http://localhost:3001/geo/latlng?lat=${coordinates.lat}&lng=${coordinates.lng}`
       );
       const locationInfo = locationResponse.data.data;
-      geoDispatch({ type: ACTIONS.SET_GEO_LOCATION, payload: coordinates });
       geoDispatch({
         type: ACTIONS.SET_COUNTRY_INFORMATION,
         payload: locationInfo,
       });
+      geoDispatch({ type: ACTIONS.SET_GEO_LOCATION, payload: coordinates });
     } catch (error) {
       message.error(error.response.data.message);
     }
@@ -59,10 +62,7 @@ const LocationSearchByInput = () => {
                 placeholder: "Search",
               })}
             />
-            <Button
-              type="primary"
-              onClick={() => onAddressSelect(stateAddress)}
-            >
+            <Button type="primary" onClick={onAddressSelect}>
               <SearchOutlined />
               Search
             </Button>

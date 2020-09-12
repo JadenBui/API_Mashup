@@ -138,6 +138,7 @@ const LeafletMap = ({ coords }) => {
                       <img
                         className="map-photo-card__avatar"
                         src={photo.avatar}
+                        alt="user_avatar"
                       />
                       <Text code>{photo.userName}</Text>
                     </Row>

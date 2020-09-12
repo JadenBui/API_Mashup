@@ -35,7 +35,6 @@ export default function GeoContextProvider({ children }) {
           `http://localhost:3001/statistic/${country}/${province}`
         );
         const statisticObject = response.data.data;
-        console.log(statisticObject);
         if (Object.keys(statisticObject).length !== 0) {
           geoDispatch({
             type: ACTIONS.SET_COVID19_STAT,
@@ -44,14 +43,14 @@ export default function GeoContextProvider({ children }) {
           geoDispatch({ type: ACTIONS.SET_DATA_LOADING });
         }
       } catch (error) {
-        console.log(error);
-        message.error(error.message);
+        message.error(error.response.data.message);
       }
     };
     const getPhotos = async () => {
+      const { countryInfo, coordinates } = geoState;
       try {
         const photoResponse = await axios.get(
-          `http://localhost:3001/photos/${geoState.countryInfo.locality}?lat=${geoState.coordinates.lat}&lng=${geoState.coordinates.lng}`
+          `http://localhost:3001/photos/${countryInfo.country}/${countryInfo.locality}?lat=${coordinates.lat}&lng=${coordinates.lng}`
         );
         geoDispatch({
           type: ACTIONS.SET_PHOTOS,
@@ -63,11 +62,11 @@ export default function GeoContextProvider({ children }) {
     };
     const getNews = async () => {
       try {
-        const { province } = geoState.countryInfo;
+        const { province, country } = geoState.countryInfo;
         geoDispatch({ type: ACTIONS.SET_DATA_LOADING });
-        console.log(province);
+        console.log(province, country);
         const newsResponse = await axios.get(
-          `http://localhost:3001/news/${province}`
+          `http://localhost:3001/news/${country}/${province}`
         );
         geoDispatch({ type: ACTIONS.SET_DATA_LOADING });
         geoDispatch({
@@ -75,13 +74,18 @@ export default function GeoContextProvider({ children }) {
           payload: newsResponse.data.data,
         });
       } catch (error) {
-        message.error(error.message);
+        message.error(error.response.data.message);
       }
     };
+    //getCovidStat();
+    //getPhotos();
+    //getNews();
+  }, [geoState.countryInfo]);
+
+  useEffect(() => {
     const getTweets = async () => {
       try {
         const { lat, lng } = geoState.coordinates;
-        console.log(lat, lng);
         geoDispatch({ type: ACTIONS.SET_DATA_LOADING });
         const tweetsResponse = await axios.get(
           `http://localhost:3001/tweets?lat=${lat}&lng=${lng}`
@@ -92,14 +96,11 @@ export default function GeoContextProvider({ children }) {
           payload: tweetsResponse.data.data,
         });
       } catch (error) {
-        message.error(error.message);
+        message.error(error.response.data.message);
       }
     };
-    //getCovidStat();
-    //getPhotos();
-    //getNews();
     //getTweets();
-  }, [geoState.countryInfo]);
+  }, [geoState.coordinates]);
 
   return (
     <GeoContext.Provider

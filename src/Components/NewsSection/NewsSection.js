@@ -13,7 +13,7 @@ export default function NewsSection() {
         {news ? (
           news.map((article, index) => {
             return (
-              <div className="news-article" key={article.index}>
+              <div className="news-article" key={index}>
                 <div className="news-article__headline">
                   <div className="news-article__title">
                     <h4>

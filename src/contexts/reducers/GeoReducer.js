@@ -30,5 +30,8 @@ export default (state, action) => {
 
     case ACTIONS.SET_TWEETS:
       return { ...state, tweets: payload };
+
+    default:
+      return { ...state };
   }
 };
