@@ -32,6 +32,6 @@ export default (state, action) => {
       return { ...state, tweets: payload };
 
     default:
-      return { ...state };
+      return state;
   }
 };

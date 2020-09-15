@@ -27,12 +27,14 @@ export default function GeoContextProvider({ children }) {
   });
 
   useEffect(() => {
+    const signal = axios.CancelToken.source();
     const getCovidStat = async () => {
       const { country, province } = geoState.countryInfo;
       geoDispatch({ type: ACTIONS.SET_DATA_LOADING });
       try {
         const response = await axios.get(
-          `http://localhost:3001/statistic/${country}/${province}`
+          `http://localhost:3001/statistic/${country}/${province}`,
+          { cancelToken: signal.token }
         );
         const statisticObject = response.data.data;
         if (Object.keys(statisticObject).length !== 0) {
@@ -43,7 +45,11 @@ export default function GeoContextProvider({ children }) {
           geoDispatch({ type: ACTIONS.SET_DATA_LOADING });
         }
       } catch (error) {
-        message.error(error.response.data.message);
+        if (axios.isCancel(error)) {
+          console.log("Error: ", error.message);
+        } else {
+          message.error(error.response.data.message);
+        }
       }
     };
     const getPhotos = async () => {
@@ -57,7 +63,11 @@ export default function GeoContextProvider({ children }) {
           payload: photoResponse.data.data,
         });
       } catch (error) {
-        message.error(error.message);
+        if (axios.isCancel(error)) {
+          console.log("Error: ", error.message);
+        } else {
+          message.error(error.message);
+        }
       }
     };
     const getNews = async () => {
@@ -74,15 +84,23 @@ export default function GeoContextProvider({ children }) {
           payload: newsResponse.data.data,
         });
       } catch (error) {
-        message.error(error.response.data.message);
+        if (axios.isCancel(error)) {
+          console.log("Error: ", error.message);
+        } else {
+          message.error(error.response.data.message);
+        }
       }
     };
-    //getCovidStat();
-    //getPhotos();
-    //getNews();
+    getCovidStat();
+    getPhotos();
+    getNews();
+    return () => {
+      signal.cancel();
+    };
   }, [geoState.countryInfo]);
 
   useEffect(() => {
+    const signal = axios.CancelToken.source();
     const getTweets = async () => {
       try {
         const { lat, lng } = geoState.coordinates;
@@ -96,10 +114,17 @@ export default function GeoContextProvider({ children }) {
           payload: tweetsResponse.data.data,
         });
       } catch (error) {
-        message.error(error.response.data.message);
+        if (axios.isCancel(error)) {
+          console.log("Error: ", error.message);
+        } else {
+          message.error(error.response.data.message);
+        }
       }
     };
-    //getTweets();
+    getTweets();
+    return () => {
+      signal.cancel();
+    };
   }, [geoState.coordinates]);
 
   return (
