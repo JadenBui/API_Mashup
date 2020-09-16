@@ -20,12 +20,12 @@ const LocationSearchByInput = () => {
     try {
       const fomarttedAddress = encodeURI(stateAddress.toLowerCase());
       const coordinateResponse = await axios.get(
-        `http://localhost:3001/geo/address/${fomarttedAddress}`
+        `/geo/address/${fomarttedAddress}`
       );
       const coordinateResult = coordinateResponse.data.data.results[0];
       const coordinates = coordinateResult.geometry.location;
       const locationResponse = await axios.get(
-        `http://localhost:3001/geo/latlng?lat=${coordinates.lat}&lng=${coordinates.lng}`
+        `/geo/latlng?lat=${coordinates.lat}&lng=${coordinates.lng}`
       );
       const locationInfo = locationResponse.data.data;
       geoDispatch({
