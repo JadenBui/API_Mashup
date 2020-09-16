@@ -66,7 +66,7 @@ export default function GeoContextProvider({ children }) {
         if (axios.isCancel(error)) {
           console.log("Error: ", error.message);
         } else {
-          message.error(error.message);
+          message.error(error.response.data.message);
         }
       }
     };
